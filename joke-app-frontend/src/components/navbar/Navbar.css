@@ -1,0 +1,18 @@
+.navbar-container {
+    background-color: #007bff;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .navbar-link {
+    font-size: 18px;
+    margin-right: 20px;
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .navbar-link:hover {
+    color: #e6e6e6;
+  }
+  

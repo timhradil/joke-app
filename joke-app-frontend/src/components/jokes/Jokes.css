@@ -1,0 +1,112 @@
+.jokes-container {
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    min-height: calc(100vh - 102px);
+    position: relative;
+    }
+  
+  .jokes-container h1 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .jokes-leaderboard {
+    list-style-type: decimal;
+    padding-left: 20px;
+  }
+  
+  .joke-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .joke-position {
+    display: inline-block;
+    width: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+  }
+  
+  .joke-text {
+    flex-grow: 1;
+    margin-right: 10px;
+    color: #333;
+  }
+  
+  .joke-votes {
+    display: flex;
+    align-items: center;
+  }
+  
+  .vote-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    margin: 0 5px;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .vote-button:hover {
+    color: #ff6b6b;
+  }
+  
+  .vote-count {
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .refresh-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 35px;
+    padding: 10px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .refresh-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .refresh-button:focus {
+    outline: none;
+  }
+  
+  .refresh-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  @media screen and (max-width: 500px) {
+    .jokes-container {
+      text-align: center;
+    }
+  
+    .refresh-button {
+      position: static;
+      margin: 16px;
+      margin-top: 0px;
+    }
+  }

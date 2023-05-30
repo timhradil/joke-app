@@ -1,0 +1,140 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  joke-app-backend
+
+  Sample SAM Template for joke-app-backend
+
+Globals:
+  Function:
+    Timeout: 180
+    MemorySize: 128
+    Environment:
+      Variables:
+        DYNAMODB_TABLE_JOKES: !Ref jokesDynamoDB
+        DYNAMODB_TABLE_VOTES: !Ref votesDynamoDB
+  Api:
+    TracingEnabled: false
+    Cors:
+      AllowMethods: "'GET,POST,OPTIONS'"
+      AllowHeaders: "'*'"
+      AllowOrigin: "'*'"
+
+Resources:
+  GenerateJokeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: generate_joke/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        GenerateJokeEvent:
+          Type: Api 
+          Properties:
+            Path: /generate_joke
+            Method: POST
+            RestApiId: 
+              Ref: jokeAppApi
+      Policies:
+        - AmazonDynamoDBFullAccess
+        - AWSSecretsManagerGetSecretValuePolicy:
+            SecretArn: "arn:aws:secretsmanager:us-west-2:586103959850:secret:OpenAIKey-sXAkvm"
+  
+  GetJokesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: get_jokes/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        GetJokesEvent:
+          Type: Api 
+          Properties:
+            Path: /get_jokes
+            Method: GET
+            RestApiId: 
+              Ref: jokeAppApi
+      Policies:
+        - AmazonDynamoDBFullAccess
+  
+  GetVotesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: get_votes/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        GetVotesEvent:
+          Type: Api 
+          Properties:
+            Path: /get_votes
+            Method: POST
+            RestApiId: 
+              Ref: jokeAppApi
+      Policies:
+        - AmazonDynamoDBFullAccess
+  
+  PutVoteFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: put_vote/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        PutVoteEvent:
+          Type: Api 
+          Properties:
+            Path: /put_vote
+            Method: POST
+            RestApiId: 
+              Ref: jokeAppApi
+      Policies:
+        - AmazonDynamoDBFullAccess
+
+  jokeAppApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+  
+  jokesDynamoDB:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: jokeId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: jokeId
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
+  votesDynamoDB:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+        - AttributeName: jokeId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+        - AttributeName: jokeId
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
+Outputs:
+  jokeAppApi:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://${jokeAppApi}.execute-api.${AWS::Region}.amazonaws.com/Stage/"
