@@ -59,11 +59,17 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
+    color:rgba(0, 0, 0, 0.5);
     transition: color 0.3s;
   }
   
   .vote-button:hover {
     color: #ff6b6b;
+  }
+  
+  .vote-button:disabled {
+    color: #ccc;
+    cursor: not-allowed;
   }
   
   .vote-count {
