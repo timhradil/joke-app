@@ -7,6 +7,10 @@ export default function Home() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (!jokeTopic) {
+      setJoke('Please enter a joke topic.');
+      return;
+    }
     setJokeTopic('');
     setJoke('Generating joke...')
 
