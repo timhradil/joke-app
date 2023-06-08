@@ -6,6 +6,7 @@ from dynamodb_json import json_util as json_db
 db_client = boto3.client('dynamodb')
 DYNAMODB_TABLE_VOTES = env['DYNAMODB_TABLE_VOTES']
 
+
 def lambda_handler(event, context):
     body = json.loads(event['body'])
 

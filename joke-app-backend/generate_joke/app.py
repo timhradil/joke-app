@@ -52,5 +52,5 @@ def lambda_handler(event, context):
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
         },
-        "body": json.dumps({'joke': joke}),
+        "body": json.dumps({'joke': {'jokeId': id, 'joke': joke, 'votes': 0}}),
     }

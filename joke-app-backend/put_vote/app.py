@@ -6,6 +6,7 @@ db_client = boto3.client('dynamodb')
 DYNAMODB_TABLE_JOKES = env['DYNAMODB_TABLE_JOKES']
 DYNAMODB_TABLE_VOTES = env['DYNAMODB_TABLE_VOTES']
 
+
 def lambda_handler(event, context):
     body = json.loads(event['body'])
 
@@ -38,7 +39,7 @@ def lambda_handler(event, context):
             votes = votes + 1
         else:
             votes = votes - 1
-    
+
     response = db_client.update_item(
         TableName=DYNAMODB_TABLE_JOKES,
         Key={
@@ -52,7 +53,7 @@ def lambda_handler(event, context):
 
     response = db_client.put_item(
         TableName=DYNAMODB_TABLE_VOTES,
-        Item= {
+        Item={
             'userId': {'S': body['userId']},
             'jokeId': {'S': body['jokeId']},
             'type': {'S': body['type']}
